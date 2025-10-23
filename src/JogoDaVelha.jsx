@@ -9,16 +9,32 @@ function Quadrado({quadrado, handleClick}) {
 
 function Tabuleiro() {
     const [quadrados,setQuadrados] = useState(Array(9).fill(null));
-    
+    const [vezDoX,setVezDoX] = useState(true);
+
     function handleClick(i) {
-        console.log('clicou no quadrado: '+i);
-        const novosQuadrados = quadrados.slice();
-        novosQuadrados[i] = 'X';
-        setQuadrados(novosQuadrados);
+        if (quadrados[i] == null) {
+            console.log('clicou no quadrado: '+i);
+            console.log('Vez do X? '+vezDoX);
+            const novosQuadrados = quadrados.slice();
+            //identificar quem é o jogador da vez
+            if (vezDoX) {
+                novosQuadrados[i] = 'X';
+            } else {
+                novosQuadrados[i] = 'O';
+            }
+            setQuadrados(novosQuadrados);
+            setVezDoX(!vezDoX);
+
+        }
+    }
+
+    function handleLimparTabuleiro() {
+        setQuadrados(Array(9).fill(null));
     }
     
     return (
         <>
+            <button onClick={handleLimparTabuleiro}>Limpar</button>
             <div className='linha'>
                 <Quadrado 
                     quadrado={quadrados[0]} 
