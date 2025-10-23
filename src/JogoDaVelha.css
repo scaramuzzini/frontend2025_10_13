@@ -8,3 +8,7 @@
 .linha {
     display:flex;
 }
+
+.msg {
+    color: red;
+}

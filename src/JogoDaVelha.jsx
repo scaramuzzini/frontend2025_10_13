@@ -2,9 +2,22 @@ import { useState } from 'react';
 import './JogoDaVelha.css'
 
 function Quadrado({quadrado, handleClick}) {
-    
 
     return <button className="q" onClick={handleClick}>{quadrado}</button>
+}
+
+function verificarVencedor(q) {
+    /*
+        AND (E)
+        V V = V
+        V F = F
+        F V = F
+        F F = F
+    */
+   if (q[0] == q[1] && q[1] == q[2]) {
+    return q[0]; 
+   }
+   return null;
 }
 
 function Tabuleiro() {
@@ -12,28 +25,28 @@ function Tabuleiro() {
     const [vezDoX,setVezDoX] = useState(true);
 
     function handleClick(i) {
+        let vencedor = verificarVencedor(quadrados);
+        if (vencedor) {
+            alert('O vencedor é: '+vencedor);
+        }
         if (quadrados[i] == null) {
-            console.log('clicou no quadrado: '+i);
-            console.log('Vez do X? '+vezDoX);
             const novosQuadrados = quadrados.slice();
-            //identificar quem é o jogador da vez
-            if (vezDoX) {
-                novosQuadrados[i] = 'X';
-            } else {
-                novosQuadrados[i] = 'O';
-            }
+            novosQuadrados[i] = vezDoX ? 'X' : 'O';
             setQuadrados(novosQuadrados);
             setVezDoX(!vezDoX);
-
         }
     }
 
     function handleLimparTabuleiro() {
         setQuadrados(Array(9).fill(null));
+        setVezDoX(true);
     }
+
+    let mensagem = 'Vez do jogador: ' + (vezDoX ? 'X' : 'O');
     
     return (
         <>
+            <h2 className='msg'>{mensagem}</h2>
             <button onClick={handleLimparTabuleiro}>Limpar</button>
             <div className='linha'>
                 <Quadrado 
