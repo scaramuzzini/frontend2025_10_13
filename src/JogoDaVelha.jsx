@@ -7,16 +7,26 @@ function Quadrado({quadrado, handleClick}) {
 }
 
 function verificarVencedor(q) {
-    /*
-        AND (E)
-        V V = V
-        V F = F
-        F V = F
-        F F = F
-    */
-   if (q[0] == q[1] && q[1] == q[2]) {
-    return q[0]; 
+    const combinacoesVencedoras = [
+        [0,1,2], //l1
+        [3,4,5], //l2
+        [6,7,8], //l3
+
+        [0,3,6], //c1
+        [1,4,7], //c2
+        [2,5,8], //c3
+
+        [0,4,8],//dp
+        [2,4,6],//ds
+    ];
+  
+   for (let i=0;i<combinacoesVencedoras.length; i++) {
+        const [p1,p2,p3] = combinacoesVencedoras[i];
+        if (q[p1] && q[p1] == q[p2] && q[p2] == q[p3]) {
+            return q[p1]; 
+        }
    }
+
    return null;
 }
 
@@ -25,9 +35,8 @@ function Tabuleiro() {
     const [vezDoX,setVezDoX] = useState(true);
 
     function handleClick(i) {
-        let vencedor = verificarVencedor(quadrados);
-        if (vencedor) {
-            alert('O vencedor é: '+vencedor);
+        if (verificarVencedor(quadrados)) {
+            return;
         }
         if (quadrados[i] == null) {
             const novosQuadrados = quadrados.slice();
@@ -41,8 +50,24 @@ function Tabuleiro() {
         setQuadrados(Array(9).fill(null));
         setVezDoX(true);
     }
-
-    let mensagem = 'Vez do jogador: ' + (vezDoX ? 'X' : 'O');
+    let mensagem;
+    let vencedor = verificarVencedor(quadrados);
+    if (vencedor) {
+        mensagem = "Vencedor é "+vencedor;
+    } else {
+        let vazio = false;
+        for (let j=0;j<quadrados.length;j++) {
+            if (quadrados[j] == null) {
+                vazio = true;
+                break;
+            }
+        }
+        if (vazio) {
+            mensagem = 'Vez do jogador: ' + (vezDoX ? 'X' : 'O');
+        } else {
+            mensagem = 'Velhou...(empate)';
+        }
+    }
     
     return (
         <>
