@@ -1,22 +1,37 @@
+import { useState } from 'react';
 import './JogoDaVelha.css'
+
+function Quadrado() {
+    const [quadrado,setQuadrado] = useState('');
+
+    function handleClick() {
+        if (quadrado === 'X') {
+            setQuadrado('O');
+        } else {
+            setQuadrado('X');
+        }
+    }
+
+    return <button className="q" onClick={handleClick}>{quadrado}</button>
+}
 
 function Tabuleiro() {
     return (
         <>
-            <div>
-                <button className="q">O</button>
-                <button className="q">X</button>
-                <button className="q">X</button>
+            <div className='linha'>
+                <Quadrado />
+                <Quadrado />
+                <Quadrado />
             </div>
-            <div>
-                <button className="q">X</button>
-                <button className="q">X</button>
-                <button className="q">X</button>
+            <div className='linha'>
+                <Quadrado />
+                <Quadrado />
+                <Quadrado />
             </div>
-            <div>
-                <button className="q">X</button>
-                <button className="q">X</button>
-                <button className="q">X</button>
+            <div className='linha'>
+                <Quadrado />
+                <Quadrado />
+                <Quadrado />
             </div>
         </>
     );
