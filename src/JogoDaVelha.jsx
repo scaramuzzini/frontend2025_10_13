@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import './JogoDaVelha.css'
 
-function Quadrado({quadrado, handleClick}) {
-
-    return <button className="q" onClick={handleClick}>{quadrado}</button>
+function Quadrado({quadrado, handleClick, ehVencedor}) {
+    let clazz = "q" 
+    if (ehVencedor) {
+        clazz = "qVencedor"
+    }
+    return <button className={clazz} onClick={handleClick}>{quadrado}</button>
 }
 
 function verificarVencedor(q) {
@@ -23,7 +26,7 @@ function verificarVencedor(q) {
    for (let i=0;i<combinacoesVencedoras.length; i++) {
         const [p1,p2,p3] = combinacoesVencedoras[i];
         if (q[p1] && q[p1] == q[p2] && q[p2] == q[p3]) {
-            return q[p1]; 
+            return {v: q[p1], comb: combinacoesVencedoras[i]}; 
         }
    }
 
@@ -53,9 +56,10 @@ function Tabuleiro() {
     let mensagem;
     let vencedor = verificarVencedor(quadrados);
     if (vencedor) {
-        mensagem = "Vencedor é "+vencedor;
+        mensagem = "Vencedor é "+vencedor['v'];
     } else {
         let vazio = false;
+        vencedor = { comb: [] };
         for (let j=0;j<quadrados.length;j++) {
             if (quadrados[j] == null) {
                 vazio = true;
@@ -76,35 +80,44 @@ function Tabuleiro() {
             <div className='linha'>
                 <Quadrado 
                     quadrado={quadrados[0]} 
-                    handleClick={() => handleClick(0)} />
+                    handleClick={() => handleClick(0)}
+                    ehVencedor={vencedor['comb'].includes(0)} />
                 <Quadrado 
                     quadrado={quadrados[1]} 
-                    handleClick={() => handleClick(1)}/>
+                    handleClick={() => handleClick(1)}
+                    ehVencedor={vencedor['comb'].includes(1)} />
                 <Quadrado 
                     quadrado={quadrados[2]} 
-                    handleClick={() => handleClick(2)}/>
+                    handleClick={() => handleClick(2)}
+                    ehVencedor={vencedor['comb'].includes(2)} />
             </div>
             <div className='linha'>
                 <Quadrado 
                     quadrado={quadrados[3]} 
-                    handleClick={() => handleClick(3)}/>
+                    handleClick={() => handleClick(3)}
+                    ehVencedor={vencedor['comb'].includes(3)} />
                 <Quadrado 
                     quadrado={quadrados[4]} 
-                    handleClick={() => handleClick(4)}/>
+                    handleClick={() => handleClick(4)}
+                    ehVencedor={vencedor['comb'].includes(4)} />
                 <Quadrado 
                     quadrado={quadrados[5]} 
-                    handleClick={() => handleClick(5)}/>
+                    handleClick={() => handleClick(5)}
+                    ehVencedor={vencedor['comb'].includes(5)} />
             </div>
             <div className='linha'>
                 <Quadrado 
                     quadrado={quadrados[6]} 
-                    handleClick={() => handleClick(6)}/>
+                    handleClick={() => handleClick(6)}
+                    ehVencedor={vencedor['comb'].includes(6)} />
                 <Quadrado 
                     quadrado={quadrados[7]} 
-                    handleClick={() => handleClick(7)}/>
+                    handleClick={() => handleClick(7)}
+                    ehVencedor={vencedor['comb'].includes(7)} />
                 <Quadrado 
                     quadrado={quadrados[8]} 
-                    handleClick={() => handleClick(8)}/>
+                    handleClick={() => handleClick(8)}
+                    ehVencedor={vencedor['comb'].includes(8)} />
             </div>
         </>
     );
